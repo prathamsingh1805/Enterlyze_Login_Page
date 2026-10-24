@@ -1,0 +1,1071 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Enterlyze — Central Workspace</title>
+  <link rel="icon" type="image/png" href="enterlyze-mark.png">
+  <style>
+    :root {
+      --brand-blue: #046aae;
+      --brand-blue-hover: #035388;
+      --brand-navy: #071e3d;
+      --brand-gold: #f59e0b;
+      --brand-gold-dark: #d97706;
+      --brand-gold-subtle: #fffbeb;
+      --brand-subtle: #f0f7fc;
+      --brand-border: #cbe3f5;
+      
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      
+      --bg-page: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      
+      --danger: #ef4444;
+      --danger-bg: #fef2f2;
+      --danger-border: #fecaca;
+      --success: #10b981;
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 24px;
+      
+      --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+      --shadow-xl: 0 20px 45px -10px rgba(15, 23, 42, 0.12), 0 10px 20px -5px rgba(15, 23, 42, 0.05);
+      --shadow-hover: 0 16px 32px -8px rgba(4, 106, 174, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #e0effa 0%, #f1f5f9 45%, #e2e8f0 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ------------------------------------------------------------- */
+    /* 1. AUTH SCREEN: Two-Column Showcase Split                     */
+    /* ------------------------------------------------------------- */
+    .auth-shell {
+      width: 100%;
+      max-width: 1080px;
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-xl);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      overflow: hidden;
+      min-height: 600px;
+      transition: all 0.3s ease;
+    }
+
+    /* Left Showcase Panel */
+    .showcase-panel {
+      background: linear-gradient(145deg, #071e3d 0%, #034470 50%, #046aae 100%);
+      padding: 50px 46px;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .showcase-panel::before {
+      content: "";
+      position: absolute;
+      top: -20%;
+      right: -20%;
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .showcase-panel::after {
+      content: "";
+      position: absolute;
+      bottom: -20%;
+      left: -20%;
+      width: 360px;
+      height: 360px;
+      background: radial-gradient(circle, rgba(4, 106, 174, 0.4) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .showcase-top {
+      position: relative;
+      z-index: 1;
+    }
+
+    .showcase-logo-badge {
+      display: inline-flex;
+      align-items: center;
+      background: #ffffff;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
+      margin-bottom: 32px;
+      max-width: 100%;
+    }
+
+    .showcase-logo-img {
+      max-height: 40px;
+      width: auto;
+      max-width: 240px;
+      object-fit: contain;
+    }
+
+    .showcase-headline {
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.025em;
+      margin-bottom: 14px;
+      color: #ffffff;
+    }
+
+    .showcase-headline span {
+      background: linear-gradient(90deg, #f59e0b, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .showcase-subline {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.6;
+      margin-bottom: 36px;
+    }
+
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 13px 18px;
+      border-radius: var(--radius-md);
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .feature-item:hover {
+      background: rgba(255, 255, 255, 0.13);
+      transform: translateX(4px);
+    }
+
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(245, 158, 11, 0.25));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #ffffff;
+    }
+
+    .feature-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: #ffffff;
+    }
+
+    .showcase-footer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.75);
+      margin-top: 36px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .showcase-footer svg {
+      color: var(--brand-gold);
+    }
+
+    /* Right Auth Form Panel */
+    .form-panel {
+      padding: 50px 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #ffffff;
+    }
+
+    .brand-top {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .brand-logo {
+      height: 46px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .company-banner-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      margin-top: 14px;
+    }
+
+    .company-banner-img {
+      max-height: 30px;
+      width: auto;
+      max-width: 170px;
+      object-fit: contain;
+    }
+
+    .heading {
+      font-size: 23px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .subheading {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 26px;
+      line-height: 1.5;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .input-box {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      color: var(--text-main);
+      background: #fff;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      outline: none;
+      margin-bottom: 18px;
+    }
+
+    .input-box:focus {
+      border-color: var(--brand-blue);
+      box-shadow: 0 0 0 3.5px rgba(4, 106, 174, 0.14);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px 20px;
+      background: linear-gradient(135deg, var(--brand-blue) 0%, #035388 100%);
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: inherit;
+      box-shadow: 0 4px 14px rgba(4, 106, 174, 0.25);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, #035388 0%, #02365a 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(4, 106, 174, 0.35);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-link {
+      background: none;
+      border: none;
+      color: var(--brand-blue);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 0;
+      font-family: inherit;
+      transition: color 0.15s ease;
+    }
+
+    .btn-link:hover {
+      color: var(--brand-blue-hover);
+      text-decoration: underline;
+    }
+
+    .back-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: color 0.15s ease;
+    }
+
+    .back-action:hover {
+      color: var(--brand-blue);
+    }
+
+    .alert-error {
+      background: var(--danger-bg);
+      border: 1px solid var(--danger-border);
+      color: var(--danger);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* OTP Inputs */
+    .otp-container {
+      margin-bottom: 20px;
+    }
+
+    .otp-input {
+      font-size: 26px;
+      letter-spacing: 0.35em;
+      text-align: center;
+      font-weight: 700;
+      padding: 12px;
+      color: var(--brand-blue);
+    }
+
+    .otp-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      font-size: 13px;
+    }
+
+    .timer-text {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    /* ------------------------------------------------------------- */
+    /* 2. DASHBOARD: Enterprise Workspace Shell                      */
+    /* ------------------------------------------------------------- */
+    .dashboard-wrapper {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Top Navigation Bar */
+    .dash-navbar {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px 28px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .dash-nav-left {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .dash-enterlyze-logo {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .nav-divider {
+      width: 1.5px;
+      height: 34px;
+      background: var(--border);
+    }
+
+    .dash-company-badge {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+    }
+
+    .dash-company-img {
+      max-height: 30px;
+      width: auto;
+      max-width: 180px;
+      object-fit: contain;
+    }
+
+    .dash-nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .user-profile-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f8fafc;
+      padding: 6px 14px 6px 8px;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+    }
+
+    .user-avatar-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-gold) 100%);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: 0 2px 6px rgba(4, 106, 174, 0.25);
+    }
+
+    .user-text-meta .user-display-email {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    .user-text-meta .user-org-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .btn-signout {
+      background: #ffffff;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 9px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .btn-signout:hover {
+      background: #fee2e2;
+      color: var(--danger);
+      border-color: #fca5a5;
+    }
+
+    /* Hero Welcome Banner */
+    .welcome-hero {
+      background: linear-gradient(135deg, #071e3d 0%, #034470 60%, #046aae 100%);
+      border-radius: var(--radius-lg);
+      padding: 36px 40px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+
+    .welcome-hero::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .welcome-content {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+    }
+
+    .welcome-greeting {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .welcome-greeting span {
+      background: linear-gradient(90deg, #f59e0b, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .welcome-desc {
+      font-size: 14.5px;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.5;
+    }
+
+    .welcome-badge-pill {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 10px 18px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .welcome-badge-pill span.dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--brand-gold);
+      box-shadow: 0 0 8px var(--brand-gold);
+    }
+
+    /* Modules Section */
+    .modules-section {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      padding: 36px 38px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-title-wrap {
+      margin-bottom: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 22px;
+    }
+
+    /* Branded Module Card */
+    .module-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 26px 24px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--card-accent, var(--brand-blue));
+      opacity: 0.8;
+      transition: height 0.2s ease, opacity 0.2s ease;
+    }
+
+    .module-card:hover {
+      border-color: var(--card-accent, var(--brand-blue));
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .module-card:hover::before {
+      height: 5px;
+      opacity: 1;
+    }
+
+    .module-card.loading {
+      pointer-events: none;
+      opacity: 0.75;
+    }
+
+    .module-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .module-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--icon-bg, #f0f7fc);
+      color: var(--card-accent, var(--brand-blue));
+      transition: all 0.25s ease;
+    }
+
+    .module-card:hover .module-icon-wrap {
+      background: var(--card-accent, var(--brand-blue));
+      color: #ffffff;
+      transform: scale(1.05);
+    }
+
+    .module-badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      letter-spacing: 0.02em;
+    }
+
+    .module-title {
+      font-size: 17.5px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .module-desc {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 22px;
+      flex-grow: 1;
+    }
+
+    .module-action {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--card-accent, var(--brand-blue));
+      margin-top: auto;
+    }
+
+    .module-action svg {
+      transition: transform 0.2s ease;
+    }
+
+    .module-card:hover .module-action svg {
+      transform: translateX(4px);
+    }
+
+    /* Spinner */
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    .spinner.dark {
+      border: 2px solid rgba(4, 106, 174, 0.25);
+      border-top-color: var(--brand-blue);
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Loading Overlay */
+    .launch-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(3px);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    .launch-text {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand-blue);
+    }
+
+    /* ------------------------------------------------------------- */
+    /* 3. MODAL DIALOG: Access Restricted / Not Registered           */
+    /* ------------------------------------------------------------- */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 9999;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      padding: 36px 32px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-xl);
+      border: 1.5px solid var(--border);
+    }
+
+    .modal-icon-wrap {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #fef3c7;
+      color: #d97706;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px;
+      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.15);
+    }
+
+    .modal-title {
+      font-size: 21px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .modal-desc {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 28px;
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .auth-shell {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+      }
+      .showcase-panel {
+        display: none;
+      }
+      .form-panel {
+        padding: 38px 30px;
+      }
+      .welcome-hero {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+        padding: 28px;
+      }
+      .modules-section {
+        padding: 24px;
+      }
+      .modules-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- STEP 1 & 2: Split Screen Auth Container -->
+  <div class="auth-shell" id="auth-container">
+    
+    <!-- Left Showcase Panel -->
+    <div class="showcase-panel">
+      <div class="showcase-top">
+        <div class="showcase-logo-badge">
+          <img src="infocloud-logo.png" alt="Infocloud" id="showcase-company-logo" class="showcase-logo-img">
+        </div>
+        <h2 class="showcase-headline">Unified <span>Enterprise</span> Workspace</h2>
+        <p class="showcase-subline">
+          Access all authorized services, desk reservations, visitor passes, and workplace tools seamlessly with one-time verification.
+        </p>
+
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+            </div>
+            <div class="feature-text">Visitor Management & Security Passes</div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            </div>
+            <div class="feature-text">HRMS, Payroll & Employee Portal</div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div class="feature-text">Hot Desk & Meeting Room Booking</div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+            </div>
+            <div class="feature-text">Smart Car Parking & Corporate Shuttle</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="showcase-footer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Protected by Enterlyze Multi-Factor Security</span>
+      </div>
+    </div>
+
+    <!-- Right Form Panel -->
+    <div class="form-panel">
+      <div class="brand-top">
+        <img src="enterlyze-lockup.png" alt="Enterlyze" class="brand-logo">
+        <div class="company-banner-box" id="company-banner-wrap">
+          <img src="infocloud-logo.png" alt="Infocloud" id="company-banner-logo" class="company-banner-img">
+        </div>
+      </div>
+
+      <!-- STEP 1: Email Form -->
+      <div id="step-email">
+        <h1 class="heading">Sign in to your account</h1>
+        <p class="subheading">Enter your official work email address to receive a one-time verification code.</p>
+        
+        <div id="err-email"></div>
+        
+        <form id="form-email">
+          <label class="field-label" for="input-email">Work Email</label>
+          <input 
+            type="email" 
+            id="input-email" 
+            class="input-box" 
+            placeholder="name@infocloud.com" 
+            required 
+            autocomplete="email"
+            autofocus
+          >
+          <button type="submit" id="btn-send-otp" class="btn-primary">
+            <span>Continue with Email</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- STEP 2: OTP Form -->
+      <div id="step-otp" style="display: none;">
+        <div class="back-action" id="btn-change-email">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Change Email
+        </div>
+        
+        <h1 class="heading">Verify your email</h1>
+        <p class="subheading">We sent a 6-digit verification code to <br><strong id="display-user-email" style="color: var(--text-main);"></strong></p>
+        
+        <div id="err-otp"></div>
+
+        <form id="form-otp">
+          <div class="otp-container">
+            <label class="field-label" for="input-otp">Verification Code</label>
+            <input 
+              type="text" 
+              id="input-otp" 
+              class="input-box otp-input" 
+              maxlength="6" 
+              placeholder="••••••" 
+              inputmode="numeric" 
+              autocomplete="one-time-code"
+              required
+            >
+          </div>
+
+          <button type="submit" id="btn-verify-otp" class="btn-primary">
+            <span>Verify & Continue</span>
+          </button>
+
+          <div class="otp-footer">
+            <span class="timer-text" id="resend-timer-text">Resend code in <strong id="countdown">60</strong>s</span>
+            <button type="button" class="btn-link" id="btn-resend" style="display: none;">Resend Code</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STEP 3: Enterprise Workspace Dashboard -->
+  <div class="dashboard-wrapper" id="dashboard-container" style="display: none;">
+    
+    <!-- Top Nav Bar -->
+    <header class="dash-navbar">
+      <div class="dash-nav-left">
+        <img src="enterlyze-lockup.png" alt="Enterlyze" class="dash-enterlyze-logo">
+        <div class="nav-divider"></div>
+        <div class="dash-company-badge">
+          <img src="infocloud-logo.png" alt="Infocloud" id="dash-company-logo" class="dash-company-img">
+        </div>
+      </div>
+
+      <div class="dash-nav-right">
+        <div class="user-profile-badge">
+          <div class="user-avatar-circle" id="avatar-initial">U</div>
+          <div class="user-text-meta">
+            <div class="user-display-email" id="header-user-email">employee@infocloud.com</div>
+            <div class="user-org-label" id="user-company-name">Infocloud It Services pvt. ltd.</div>
+          </div>
+        </div>
+
+        <button class="btn-signout" id="btn-signout">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+          Sign Out
+        </button>
+      </div>
+    </header>
+
+    <!-- Welcome Hero -->
+    <div class="welcome-hero">
+      <div class="welcome-content">
+        <h1 class="welcome-greeting">Welcome back, <span id="welcome-user-name">Employee</span> 👋</h1>
+        <p class="welcome-desc">Select any of your authorized enterprise applications below to launch directly without secondary sign-ins.</p>
+      </div>
+      <div class="welcome-badge-pill">
+        <span class="dot"></span>
+        <span>Unified SSO Active</span>
+      </div>
+    </div>
+
+    <!-- Modules Section -->
+    <main class="modules-section">
+      <div class="section-title-wrap">
+        <h2 class="section-title">Connected Applications</h2>
+      </div>
+
+      <div class="modules-grid" id="modules-grid"></div>
+    </main>
+  </div>
+
+  <!-- Access Restricted / Not Registered Modal Dialog -->
+  <div id="access-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-icon-wrap">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+        </svg>
+      </div>
+      <h3 class="modal-title">Access Restricted</h3>
+      <p class="modal-desc" id="modal-error-message">You are not registered for this module. Please contact your administrator.</p>
+      <button class="btn-primary" id="btn-modal-dismiss" type="button">Understood</button>
+    </div>
+  </div>
+
+  <footer class="footer-note" id="global-footer">Enterlyze Unified Work Hub • Infocloud Services</footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
